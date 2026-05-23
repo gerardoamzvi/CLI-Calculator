@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 float calculate(float a, float b, char sign, int *error)
 {
     //*error goes to the address and reads OR writes the value
@@ -51,8 +52,7 @@ void run_interactive()
     int error = 0;
     while (1)
     {
-
-
+        printf("calc> ");
         fgets(buff, 100, stdin);
         if (strncmp(buff, "exit", 4) == 0)
         {
