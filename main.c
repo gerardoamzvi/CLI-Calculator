@@ -1,63 +1,95 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-float calculate(float a, float b, char sign, int *error){
+#include <string.h>
+float calculate(float a, float b, char sign, int *error)
+{
     //*error goes to the address and reads OR writes the value
 
     switch (sign)
     {
-        case '+': return a + b;
-        case '-': return a - b;
-        case '*': return a * b;
-        case '/':
-            if (b == 0) {
-                printf("Error: division by zero\n");
-                *error = 1;
-                return 0;
-            }
-            return a / b;
-        default:
-            printf("Error: unknown operator\n");
+    case '+':
+        return a + b;
+    case '-':
+        return a - b;
+    case '*':
+        return a * b;
+    case '/':
+        if (b == 0)
+        {
+            printf("Error: division by zero\n");
             *error = 1;
             return 0;
+        }
+        return a / b;
+    default:
+        printf("Error: unknown operator\n");
+        *error = 1;
+        return 0;
     }
 }
 
-void run_from_args(char *argv[]) {
+void run_from_args(char *argv[])
+{
     int error = 0;
     float a = atof(argv[1]);
     float b = atof(argv[3]);
     // string argv[2] != char argv[2][0] (switch case works only with int and char)
-    char sign = argv[2][0]; 
+    char sign = argv[2][0];
     float result = calculate(a, b, sign, &error);
-    if (!error) {
+    if (!error)
+    {
         printf("The result is : %f\n", result);
     }
 }
 
-void run_interactive() {
+void run_interactive()
+{
+
     char buff[100];
-    fgets(buff, 100, stdin);
-    float a, b;
     char sign;
     int error = 0;
-    sscanf(buff, "%f %c %f", &a, &sign, &b); 
-    float result = calculate(a, b, sign, &error);
-    if (!error) {
-        printf("The result is : %f\n", result);
-    }
+    float a, b;
 
+    while (1)
+    {
+        error = 0;
+
+        float a, b;
+        char sign;
+        int error = 0;
+        fgets(buff, 100, stdin);
+        if (strncmp(buff, "exit", 4) == 0)
+        {
+            break;
+        }
+        int has_all_varaibles = sscanf(buff, "%f %c %f", &a, &sign, &b);
+
+        if (has_all_varaibles == 3)
+        {
+            float result = calculate(a, b, sign, &error);
+            if (!error)
+            {
+                printf("The result is : %f\n", result);
+            }
+            result = 0;
+        }
+        else
+        {
+            printf("Enter the correct form of cal culation : 3 + 5\n");
+        }
+    }
 }
 
 int main(int argc, char *argv[])
-{   
+{
     int number_of_word = argc - 1;
     printf("Number of arguments %d\n", number_of_word);
 
     float result;
-    
-    if (number_of_word == 0) {
-        printf("Welcome to the CLI calculator you can rather lauch the app by writting '.\\calc 3 + 5' or './calc 3 + 5' \n for direct calculation or when you-e laucnched the app type the calculation\n");
+
+    if (number_of_word == 0)
+    {
+        printf("Welcome to the CLI calculator you can rather launch the app by writting '.\\calc 3 + 5' or './calc 3 + 5' \n for direct calculation or when you-e laucnched the app type the calculation\n");
         run_interactive();
     }
     else
