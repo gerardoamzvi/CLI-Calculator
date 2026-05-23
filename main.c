@@ -46,17 +46,13 @@ void run_interactive()
 {
 
     char buff[100];
+    float a, b;
     char sign;
     int error = 0;
-    float a, b;
-
     while (1)
     {
-        error = 0;
 
-        float a, b;
-        char sign;
-        int error = 0;
+
         fgets(buff, 100, stdin);
         if (strncmp(buff, "exit", 4) == 0)
         {
@@ -77,6 +73,7 @@ void run_interactive()
         {
             printf("Enter the correct form of cal culation : 3 + 5\n");
         }
+        error = 0;
     }
 }
 
@@ -84,9 +81,6 @@ int main(int argc, char *argv[])
 {
     int number_of_word = argc - 1;
     printf("Number of arguments %d\n", number_of_word);
-
-    float result;
-
     if (number_of_word == 0)
     {
         printf("Welcome to the CLI calculator you can rather launch the app by writting '.\\calc 3 + 5' or './calc 3 + 5' \n for direct calculation or when you-e laucnched the app type the calculation\n");
