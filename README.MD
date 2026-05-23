@@ -1,4 +1,4 @@
-# calc — CLI Calculator in C
+#  CLI Calculator in C | calc
 
 A simple command-line calculator built in C, as a learning project to discover C fundamentals (pointers, strings, CLI arguments, REPL).
 
