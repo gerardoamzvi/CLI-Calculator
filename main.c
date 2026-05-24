@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+void help_prints();
+
 float calculate(float a, float b, char sign, int *error)
 {
     //*error goes to the address and reads OR writes the value
@@ -99,6 +101,10 @@ void run_interactive()
             }
             continue;
         }
+        if (strncmp(buff, "help", 4) == 0){
+            help_prints();
+            continue;
+        }
 
         if (strstr(buff, "ans") != NULL)
         {
@@ -154,4 +160,28 @@ int main(int argc, char *argv[])
     }
 
     return 0;
+}
+
+
+void help_prints(){
+        printf("=== CLI Calculator Help ===\n\n");
+    printf("DIRECT MODE:\n");
+    printf("  ./calc 3 + 5        run a single calculation\n\n");
+    printf("INTERACTIVE MODE:\n");
+    printf("  ./calc              launch the interactive mode\n\n");
+    printf("COMMANDS:\n");
+    printf("  history             show all previous calculations\n");
+    printf("  help                show this help message\n");
+    printf("  exit                quit the calculator\n\n");
+    printf("OPERATORS:\n");
+    printf("  +   addition\n");
+    printf("  -   subtraction\n");
+    printf("  *   multiplication\n");
+    printf("  /   division\n\n");
+    printf("SPECIAL:\n");
+    printf("  ans                 reuse the last result\n");
+    printf("  e.g: ans + 5       add 5 to the last result\n\n");
+    printf("FORMAT:\n");
+    printf("  3 + 5               spaces between numbers and operator\n");
+    printf("  3.5 * 2             decimal numbers supported\n");
 }

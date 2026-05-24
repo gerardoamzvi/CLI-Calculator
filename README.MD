@@ -46,7 +46,7 @@ calc> exit
 ## TODO
 
 - [x] Session history (remember last calculations)
-- [ ] `help` command listing all features
-- [ ] Additional operators: `%` (modulo), `^` (power)
+- [x] `help` command listing all features
+- [ ] Additional operators: `%` (modulo), `^` (power) (Optional)
 - [ ] Variables (`x = 5`, then `x * 2`)
 - [ ] Expressions with parentheses (`(3 + 5) * 2`)
