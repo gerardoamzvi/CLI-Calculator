@@ -26,6 +26,11 @@ gcc -Wall -Wextra main.c -o calc
 ./calc
 calc> 3 + 5
 8.000000
+calc> ans * 2
+16.000000
+calc> history
+1 : 3 + 5 = 8.000000
+2 : ans * 2 = 16.000000
 calc> exit
 ```
 
@@ -34,11 +39,13 @@ calc> exit
 - Basic operations: `+` `-` `*` `/`
 - Decimal numbers
 - Interactive REPL mode
+- `ans` — reuse last result in next calculation
+- Session history with `history` command
 - Error handling: division by zero, invalid input
 
 ## TODO
 
-- [ ] Session history (remember last calculations)
+- [x] Session history (remember last calculations)
 - [ ] `help` command listing all features
 - [ ] Additional operators: `%` (modulo), `^` (power)
 - [ ] Variables (`x = 5`, then `x * 2`)
