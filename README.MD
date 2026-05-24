@@ -28,9 +28,15 @@ calc> 3 + 5
 8.000000
 calc> ans * 2
 16.000000
+calc> x = 5
+Variable x = 5.000000 saved
+calc> x + ans
+21.000000
 calc> history
 1 : 3 + 5 = 8.000000
 2 : ans * 2 = 16.000000
+3 : x + ans = 21.000000
+calc> help
 calc> exit
 ```
 
@@ -41,12 +47,14 @@ calc> exit
 - Interactive REPL mode
 - `ans` — reuse last result in next calculation
 - Session history with `history` command
+- Variables — save and reuse values (`x = 5`, then `x * 2`)
+- `help` command with full usage guide
 - Error handling: division by zero, invalid input
 
 ## TODO
 
-- [x] Session history (remember last calculations)
-- [x] `help` command listing all features
-- [ ] Additional operators: `%` (modulo), `^` (power) (Optional)
-- [ ] Variables (`x = 5`, then `x * 2`)
+- [x] Session history
+- [x] `help` command
+- [x] Variables (`x = 5`, then `x * 2`)
+- [ ] Additional operators: `%` (modulo), `^` (power)
 - [ ] Expressions with parentheses (`(3 + 5) * 2`)
