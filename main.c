@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+struct Variable
+{
+    char variable_name[50];
+    float value;
+};
+
 void help_prints();
 
 float calculate(float a, float b, char sign, int *error)
@@ -45,28 +51,41 @@ void run_from_args(char *argv[])
     }
 }
 
-void replace_string_by_value(char buff[100], float ans)
+void replace_string_by_value(char buff[100], char *name, float ans)
 {
     // look for ans in buff
     // if (strstr(buff, "ans") != NULL) {
     //  convert ans into string and add to ans_str
     char ans_str[50];
     sprintf(ans_str, "%f", ans);
+    int name_len = strlen(name);
     // create now buff (string) where we replace the value of ans
+    while (strstr(buff, name) != NULL)
+    {
+        char new_buff[100];
+        char *pos = strstr(buff, name);
+        int before_ans = pos - buff;
 
-    char new_buff[100];
-    char *pos = strstr(buff, "ans");
-    int before_ans = pos - buff;
+        strncpy(new_buff, buff, before_ans);
+        new_buff[before_ans] = '\0';      // We are building a string, for that we etell strcat where to start
+        strcat(new_buff, ans_str);        // add ans to new buff
+        strcat(new_buff, pos + name_len); // The rest of the elements of the buff after ans
 
-    strncpy(new_buff, buff, before_ans);
-    new_buff[before_ans] = '\0'; // We are building a string, for that we etell strcat where to start
-    strcat(new_buff, ans_str);   // add ans to new buff
-    strcat(new_buff, pos + 3);   // The rest of the elements of the buff after ans
-
-    ///
-    strcpy(buff, new_buff);
-
-    //}
+        ///
+        strcpy(buff, new_buff);
+    }
+}
+// Look for a varible in table struct
+int find_variable(struct Variable variables[], int count, char *name)
+{
+    for (int i = 0; i < count; i++)
+    {
+        if (strcmp(variables[i].variable_name, name) == 0)
+        {
+            return i; // return the index
+        }
+    }
+    return -1;
 }
 void run_interactive()
 {
@@ -78,10 +97,17 @@ void run_interactive()
     int has_ans = 0;
     char history[100][200]; // contains history of only 100 calculations
     int counter = 0;
+    char variable_name[50];
+    float variable_value = 0;
+    int variables_count = 0; // track the number of variables for simplified loop
+
+    struct Variable variables[100]; // We can save 100 variables
+
     while (1)
     {
         printf("calc> ");
         fgets(buff, 100, stdin);
+
         if (strncmp(buff, "exit", 4) == 0)
         {
             break;
@@ -101,7 +127,8 @@ void run_interactive()
             }
             continue;
         }
-        if (strncmp(buff, "help", 4) == 0){
+        if (strncmp(buff, "help", 4) == 0)
+        {
             help_prints();
             continue;
         }
@@ -115,13 +142,40 @@ void run_interactive()
             }
             else
             {
-                replace_string_by_value(buff, ans);
+                replace_string_by_value(buff, "ans", ans);
             }
         }
 
-        int has_all_varaibles = sscanf(buff, "%f %c %f", &a, &sign, &b);
+        if (sscanf(buff, "%s = %f", variable_name, &variable_value) == 2)
+        {
+            int var_index = find_variable(variables, variables_count, variable_name);
+            if (var_index == -1)
+            {
+                strcpy(variables[variables_count].variable_name, variable_name);
+                variables[variables_count].value = variable_value;
+                variables_count += 1;
+                printf("Variable %s = %f saved\n", variable_name, variable_value);
+                continue;
+            }
+            else
+            {
+                variables[var_index].value = variable_value;
+                printf("Variable %s = %f updated\n", variable_name, variable_value);
+                continue;
+            }
+        }
 
-        if (has_all_varaibles == 3)
+        for (int i = 0; i < variables_count; i++)
+        {
+            if (strstr(buff, variables[i].variable_name) != NULL)
+            {
+                replace_string_by_value(buff, variables[i].variable_name, variables[i].value);
+            }
+        }
+
+        int has_all_elements = sscanf(buff, "%f %c %f", &a, &sign, &b);
+
+        if (has_all_elements == 3)
         {
             float result = calculate(a, b, sign, &error);
             if (!error)
@@ -162,9 +216,9 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-
-void help_prints(){
-        printf("=== CLI Calculator Help ===\n\n");
+void help_prints()
+{
+    printf("=== CLI Calculator Help ===\n\n");
     printf("DIRECT MODE:\n");
     printf("  ./calc 3 + 5        run a single calculation\n\n");
     printf("INTERACTIVE MODE:\n");
@@ -180,7 +234,12 @@ void help_prints(){
     printf("  /   division\n\n");
     printf("SPECIAL:\n");
     printf("  ans                 reuse the last result\n");
-    printf("  e.g: ans + 5       add 5 to the last result\n\n");
+    printf("  e.g: ans + 5        add 5 to the last result\n\n");
+    printf("VARIABLES:\n");
+    printf("  x = 5               save a variable\n");
+    printf("  x + 3               use a variable in a calculation\n");
+    printf("  x = 10              update an existing variable\n");
+    printf("  x + x               use a variable multiple times\n\n");
     printf("FORMAT:\n");
     printf("  3 + 5               spaces between numbers and operator\n");
     printf("  3.5 * 2             decimal numbers supported\n");
