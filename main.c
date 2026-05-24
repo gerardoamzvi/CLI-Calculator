@@ -43,13 +43,39 @@ void run_from_args(char *argv[])
     }
 }
 
+void replace_string_by_value(char buff[100], float ans)
+{
+    // look for ans in buff
+    // if (strstr(buff, "ans") != NULL) {
+    //  convert ans into string
+    char ans_str[50];
+    sprintf(ans_str, "%f", ans);
+    // create now buff (string) where we replace the value of ans
+
+    char new_buff[100];
+    char *pos = strstr(buff, "ans");
+    int before_ans = pos - buff;
+
+    strncpy(new_buff, buff, before_ans);
+    new_buff[before_ans] = '\0'; // We are building a string, for that we etell strcat where to start
+    strcat(new_buff, ans_str);   // add ans to new buff
+    strcat(new_buff, pos + 3);   // The rest of the elements of the buff after ans
+
+    ///
+    strcpy(buff, new_buff);
+
+    //}
+}
 void run_interactive()
 {
-
     char buff[100];
     float a, b;
     char sign;
     int error = 0;
+    float ans;
+    int has_ans = 0;
+    //char **history[2];
+    int counter = 0;
     while (1)
     {
         printf("calc> ");
@@ -58,6 +84,21 @@ void run_interactive()
         {
             break;
         }
+
+        if (strstr(buff, "ans") != NULL)
+        {   
+            printf("hhhhhhh");
+            if (has_ans == 0)
+            {
+                printf("Error : There is no previous answer  you have to make at least one calculation\n");
+                continue;
+            }
+            else
+            {
+                replace_string_by_value(buff, ans);
+            }
+        }
+
         int has_all_varaibles = sscanf(buff, "%f %c %f", &a, &sign, &b);
 
         if (has_all_varaibles == 3)
@@ -66,6 +107,9 @@ void run_interactive()
             if (!error)
             {
                 printf("The result is : %f\n", result);
+                has_ans = 1;
+                ans = result;
+                counter += 1;
             }
             result = 0;
         }
