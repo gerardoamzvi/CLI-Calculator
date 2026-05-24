@@ -47,7 +47,7 @@ void replace_string_by_value(char buff[100], float ans)
 {
     // look for ans in buff
     // if (strstr(buff, "ans") != NULL) {
-    //  convert ans into string
+    //  convert ans into string and add to ans_str
     char ans_str[50];
     sprintf(ans_str, "%f", ans);
     // create now buff (string) where we replace the value of ans
@@ -74,7 +74,7 @@ void run_interactive()
     int error = 0;
     float ans;
     int has_ans = 0;
-    //char **history[2];
+    char history[100][200]; // contains history of only 100 calculations
     int counter = 0;
     while (1)
     {
@@ -84,10 +84,24 @@ void run_interactive()
         {
             break;
         }
+        if (strncmp(buff, "history", 7) == 0)
+        {
+            if (counter == 0)
+            {
+                printf("The history is currenty empty\n");
+            }
+            else
+            {
+                for (int i = 0; i < counter; i++)
+                {
+                    printf("%s", history[i]);
+                }
+            }
+            continue;
+        }
 
         if (strstr(buff, "ans") != NULL)
-        {   
-            printf("hhhhhhh");
+        {
             if (has_ans == 0)
             {
                 printf("Error : There is no previous answer  you have to make at least one calculation\n");
@@ -108,14 +122,18 @@ void run_interactive()
             {
                 printf("The result is : %f\n", result);
                 has_ans = 1;
-                ans = result;
                 counter += 1;
+                ans = result;
+                char history_item[200];
+                buff[strcspn(buff, "\n")] = '\0'; // goes at where we have \n and replace it by a \0
+                sprintf(history_item, "%d : %s= %f \n", counter, buff, result);
+                strcpy(history[counter - 1], history_item);
             }
             result = 0;
         }
         else
         {
-            printf("Enter the correct form of cal culation : 3 + 5\n");
+            printf("Enter the correct form of calculation : 3 + 5\n");
         }
         error = 0;
     }
