@@ -12,7 +12,7 @@ make
 
 Or manually:
 ```bash
-gcc -Wall -Wextra main.c -o calc
+gcc -Wall -Wextra main.c -o calc -lm
 ```
 
 ## Usage
@@ -32,10 +32,13 @@ calc> x = 5
 Variable x = 5.000000 saved
 calc> x + ans
 21.000000
+calc> 3 ^ 2
+9.000000
+calc> 10 % 3
+1.000000
 calc> history
 1 : 3 + 5 = 8.000000
 2 : ans * 2 = 16.000000
-3 : x + ans = 21.000000
 calc> help
 calc> exit
 ```
@@ -43,6 +46,7 @@ calc> exit
 ## Features
 
 - Basic operations: `+` `-` `*` `/`
+- Modulo `%` and power `^`
 - Decimal numbers
 - Interactive REPL mode
 - `ans` — reuse last result in next calculation
@@ -56,5 +60,5 @@ calc> exit
 - [x] Session history
 - [x] `help` command
 - [x] Variables (`x = 5`, then `x * 2`)
-- [ ] Additional operators: `%` (modulo), `^` (power)
+- [x] Additional operators: `%` (modulo), `^` (power)
 - [ ] Expressions with parentheses (`(3 + 5) * 2`)

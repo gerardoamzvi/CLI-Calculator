@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h> // ^ for to the power of   
 
 struct Variable
 {
@@ -30,11 +31,17 @@ float calculate(float a, float b, char sign, int *error)
             return 0;
         }
         return a / b;
+    case '%':
+        return (int)a % (int)b; // convert a and b must be inter otherwise you get : expression must have integral type
+    case '^':
+        return pow(a, b);
+
     default:
         printf("Error: unknown operator\n");
         *error = 1;
         return 0;
     }
+    
 }
 
 void run_from_args(char *argv[])
@@ -231,7 +238,9 @@ void help_prints()
     printf("  +   addition\n");
     printf("  -   subtraction\n");
     printf("  *   multiplication\n");
-    printf("  /   division\n\n");
+    printf("  /   division\n");
+    printf("  %%  modulo (integer result)\n");
+    printf("  ^   power (3 ^ 2 = 9)\n\n");
     printf("SPECIAL:\n");
     printf("  ans                 reuse the last result\n");
     printf("  e.g: ans + 5        add 5 to the last result\n\n");
